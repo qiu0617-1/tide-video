@@ -30,7 +30,8 @@
     </form>
 
     <div class="topbar-actions">
-      <button class="ghost-btn" type="button" title="演示占位，无上传功能">投稿</button>
+      <button class="ghost-btn" id="importBtn" type="button" title="从本机选择视频，只在你浏览器里播放，不会上传">导入视频</button>
+      <input id="filePicker" type="file" accept="video/*" multiple hidden>
       <div class="avatar" aria-hidden="true">汐</div>
     </div>
   </div>
@@ -51,7 +52,26 @@
     <div class="grid" id="grid"></div>
     <p class="empty" id="empty" hidden>没有匹配的内容，换个关键词试试。</p>
   </section>
+
+  <section class="feed" id="importedSection" hidden>
+    <h2 class="section-title">我的导入 <small id="importedCount"></small>
+      <button class="ghost-btn tiny" id="clearImports" type="button">清空</button>
+    </h2>
+    <div class="grid" id="importedGrid"></div>
+    <p class="empty">这些文件只存在于当前标签页的内存里：不经过网络、不上传、刷新即消失。</p>
+  </section>
 </main>
+
+<dialog id="playerDialog" class="player-dialog" aria-label="本机视频播放">
+  <div class="dialog-head">
+    <strong id="dlgTitle">本机视频</strong>
+    <button class="icon-btn" id="dlgClose" type="button" aria-label="关闭">✕</button>
+  </div>
+  <video id="dlgVideo" controls playsinline></video>
+  <p class="dlg-meta" id="dlgMeta"></p>
+</dialog>
+
+<div class="drop-hint" id="dropHint" hidden>松手即导入（仅本机播放，不上传）</div>
 
 <footer class="footer">
   <p>汐站 TideVideo · 纯前端演示项目。所有视频、UP 主、评论均为本地虚构数据，不使用任何第三方平台的内容、接口或素材。</p>
@@ -60,5 +80,6 @@
 <script src="assets/data.js"></script>
 <script src="assets/ui.js"></script>
 <script src="assets/app.js"></script>
+<script src="assets/import.js"></script>
 </body>
 </html>
