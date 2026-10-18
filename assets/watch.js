@@ -218,10 +218,12 @@
   }
 
   /* ---------- 真实 <video> 接入 ---------- */
-  /* 媒体来源优先级：视频自带 media → URL 参数 ?media= → 内置 CC0 片段 */
+  /* 媒体来源优先级：视频自带 media → URL 参数 ?media= → mediaBase + 内置片段。
+     mediaBase 为空时是相对路径（本地/自托管），静态托管版由构建脚本填 CDN 前缀。 */
+  const mediaBase = window.TIDE.mediaBase || '';
   const customSrc = params.get('media');
-  const mediaSrc = video.media || customSrc;
-  if (mediaSrc) videoEl.src = mediaSrc;   // 仅接受同源相对路径或 /videos/ 挂载路径
+  const mediaSrc = video.media || customSrc || (mediaBase + 'media/demo.mp4');
+  videoEl.src = mediaSrc;
   videoEl.muted = state.muted;
 
   function useRealVideo() {
@@ -264,14 +266,26 @@
   videoEl.addEventListener('pause', () => setPlaying(false));
   videoEl.addEventListener('seeking', () => resetDanmakuTo(videoEl.currentTime));
   videoEl.addEventListener('error', useSimulation);
+  /* 网络慢时先等一下，别急着降级：元数据晚到仍会自动切回真实播放。 */
+  videoEl.addEventListener('loadeddata', () => { if (!state.real && videoEl.videoWidth > 0) useRealVideo(); });
 
-  /* 4 秒内拿不到元数据就当没有媒体，退回模拟（file:// 下个别浏览器会静默失败） */
-  const metaTimer = setTimeout(() => {
+  let slowNotice = false;
+  const slowTimer = setTimeout(() => {
     if (!state.real) {
-      const ready = videoEl.readyState >= 1 && videoEl.videoWidth > 0;
-      if (ready) useRealVideo(); else useSimulation();
+      slowNotice = true;
+      badge.textContent = '加载中…';
     }
-  }, 4000);
+  }, 2500);
+
+  /* 只有"确实拿不到数据"才退回模拟：20 秒仍无元数据，或浏览器明确报告无可用源。 */
+  const giveUpTimer = setTimeout(() => {
+    if (!state.real) {
+      const noSource = videoEl.networkState === 3 /* NETWORK_NO_SOURCE */;
+      const noData = videoEl.readyState < 1 && videoEl.videoWidth === 0;
+      if (noSource || noData) useSimulation();
+      else if (slowNotice) badge.textContent = '缓冲中…';
+    }
+  }, 20000);
 
   /* ---------- 播放循环 ---------- */
   let last = performance.now();
@@ -459,5 +473,9 @@
   requestAnimationFrame(loop);
   /* 静音自动播放：多数浏览器允许；被拒绝就停在首帧等用户点。 */
   videoEl.play().catch(() => setPlaying(false));
-  setTimeout(() => { if (!state.real && metaTimer) clearTimeout(metaTimer); }, 6000);
+  /* 元数据一到就撤掉这两个计时器，避免残留的降级/提示覆盖状态 */
+  videoEl.addEventListener('loadedmetadata', () => {
+    clearTimeout(slowTimer);
+    clearTimeout(giveUpTimer);
+  });
 })();

@@ -189,7 +189,7 @@ window.TIDE = (() => {
       days: 0,
       sourceLabel: '本地文件',
       seededDanmaku: false,
-      media: 'media/local-1018.mp4',
+      media: 'https://cdn.jsdelivr.net/gh/qiu0617-1/tide-video@v1/media/local-1018.mp4',
       desc: '来自本机 E:\\视频\\10月18日.mp4。原文件为 HEVC 编码，浏览器无法直接解码，已转码为 H.264 副本后播放；原始文件未做任何修改。',
       up: { name: '本机视频', initial: '本', desc: '来自本机磁盘 · 不经网络', followers: '—' },
     },
@@ -206,7 +206,7 @@ window.TIDE = (() => {
       days: 0,
       sourceLabel: '本地文件',
       seededDanmaku: false,
-      media: 'media/local-bandicam.mp4',
+      media: 'https://cdn.jsdelivr.net/gh/qiu0617-1/tide-video@v1/media/local-bandicam.mp4',
       desc: '来自本机 E:\\视频\\bandicam 2026-10-18 18-27-25-894.mp4，原生 H.264 + AAC，未转码直接播放。',
       up: { name: '本机视频', initial: '本', desc: '来自本机磁盘 · 不经网络', followers: '—' },
     },
@@ -249,5 +249,6 @@ window.TIDE = (() => {
     { name: '慢速快门', initial: '慢', text: 'prefers-reduced-motion 的降级处理是个细节活儿。', hours: 26 },
   ];
 
-  return { videos, danmakuTimeline, comments };
+  /* 媒体前缀：本地/自托管时留空（走相对路径）；静态托管版由构建脚本填 CDN 地址。 */
+  return { videos, danmakuTimeline, comments, mediaBase: 'https://cdn.jsdelivr.net/gh/qiu0617-1/tide-video@v1/' };
 })();

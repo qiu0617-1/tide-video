@@ -1,6 +1,7 @@
-# 汐站 TideVideo（公开托管版）
+# 汐站 TideVideo（公开演示）
 
-一个纯前端视频站演示：首页信息流 + 真实 `<video>` 播放 + 自研弹幕引擎。
-所有视频、UP 主、评论均为演示用途；无后端、无外部接口请求。
+纯前端视频站演示：首页信息流 + 真实 `<video>` 播放 + 自研弹幕引擎（轨道分配 / 安全间距 / 恒定速度）。
 
-观看页：`watch.html?v=local-1018`、`watch.html?v=local-bandicam`。
+- 无后端、无第三方接口调用；所有演示条目与评论均为虚构数据。
+- 媒体经 jsDelivr 版本化地址提供（`@v1`），站点本身托管在 GitHub Pages。
+- 观看：`watch.html?v=local-1018`、`watch.html?v=local-bandicam`。
