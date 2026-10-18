@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>汐站 TideVideo · 首页</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">跳到主内容</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html" aria-label="汐站首页">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text">汐站<em>TideVideo</em></span>
+    </a>
+
+    <nav class="nav" aria-label="主导航">
+      <a class="nav-item is-active" href="index.html">首页</a>
+      <a class="nav-item" href="#feed">推荐</a>
+      <a class="nav-item" href="#feed">热门</a>
+      <a class="nav-item" href="#feed">频道</a>
+    </nav>
+
+    <form class="search" role="search" onsubmit="return false">
+      <label class="sr-only" for="q">搜索视频</label>
+      <input id="q" type="search" placeholder="搜索视频、UP 主（本地演示数据）" autocomplete="off">
+      <button type="submit" aria-label="搜索">搜索</button>
+    </form>
+
+    <div class="topbar-actions">
+      <button class="ghost-btn" type="button" title="演示占位，无上传功能">投稿</button>
+      <div class="avatar" aria-hidden="true">汐</div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-roledescription="轮播" aria-label="精选内容">
+    <div class="hero-track" id="heroTrack"></div>
+    <div class="hero-dots" id="heroDots" role="tablist" aria-label="切换精选"></div>
+    <button class="hero-arrow prev" id="heroPrev" type="button" aria-label="上一张">‹</button>
+    <button class="hero-arrow next" id="heroNext" type="button" aria-label="下一张">›</button>
+  </section>
+
+  <section class="chips" id="chips" aria-label="分区筛选"></section>
+
+  <section class="feed" id="feed">
+    <h2 class="section-title">推荐 <small id="feedCount"></small></h2>
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="empty" hidden>没有匹配的内容，换个关键词试试。</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>汐站 TideVideo · 纯前端演示项目。所有视频、UP 主、评论均为本地虚构数据，不使用任何第三方平台的内容、接口或素材。</p>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/ui.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
